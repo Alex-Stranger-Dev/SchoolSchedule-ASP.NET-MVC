@@ -1,0 +1,36 @@
+﻿@model IEnumerable<SchoolSchedule.Models.Subject>
+
+@{
+    ViewBag.Title = "Subjects";
+}
+
+<h2>Subjects</h2>
+
+<td>
+    @Html.ActionLink("Add New", "InsertForm", "Subject", new { area = "" }, new { @class = "btn btn-primary" })
+</td>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @*<th>ID</th>*@
+            <th>Name</th>
+            <th>Class</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var subject in Model)
+        {
+            <tr>
+                @*<td>@subject.Id</td>*@
+                <td>@subject.Name</td>
+                <td>@subject.Class</td>
+                
+
+                <td>
+                    @Html.ActionLink("Details", "Details", new { Id = subject.Id }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

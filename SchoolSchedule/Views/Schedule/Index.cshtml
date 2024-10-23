@@ -1,0 +1,42 @@
+﻿@model IEnumerable<SchoolSchedule.Models.Schedule>
+
+@{
+    ViewBag.Title = "Schedule";
+}
+
+<h2>Schedule</h2>
+
+<td>
+    @Html.ActionLink("Add New", "InsertForm", "Schedule", new { area = "" }, new { @class = "btn btn-primary" })
+</td>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            @*<th>ID</th>*@
+            <th>Student Name</th>
+            <th>Student Last Name</th>
+            <th>Subject
+            <th>Teacher Last Name</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var schedule in Model)
+        {
+            <tr>
+                @*<td>@schedule.Id</td>*@
+                <td>@schedule.StudentName</td>
+                <td>@schedule.StudentLastName  </td>
+                <td>@schedule.Subject  </td>
+                <td>@schedule.TeacherLastName</td>
+
+
+                <td>
+                    @Html.ActionLink("Details", "Details", new { Id = schedule.Id }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
