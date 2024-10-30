@@ -4,26 +4,49 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Configuration;
+using SchoolSchedule.Data;
+using Microsoft.Ajax.Utilities;
+using System.Web.Mvc;
+using System;
+using SchoolSchedule.Abstract;
+
 
 namespace SchoolSchedule.Managers
 {
     public class SubjectManager
     {
-        private readonly string connectionString;
+        private readonly ISubjectDapper _subjectDapper;
 
-        public SubjectManager()
+
+        //public SubjectManager()
+        //{
+        //    _subjectDapper = new SubjectDapper();
+        //}
+
+        public SubjectManager(ISubjectDapper dapper)
         {
-            connectionString = ConfigurationManager.ConnectionStrings["AlexDbConnection"].ConnectionString;
+            _subjectDapper = dapper;
         }
 
-        public List<Subject> GetAllSubjects()
+        public IEnumerable<Models.Subject> GetListSubject()
         {
-            using (var connection = new SqlConnection(connectionString))
             {
-                return connection.Query<Subject>("SELECT * FROM Subject").ToList();
+                var subject = _subjectDapper.GetListSubject();
+
+                return subject;
             }
         }
 
-        // Другие методы для работы с таблицей Subjects
+        public Models.Subject GetOneSubject(int Id) 
+        {
+            {
+                var subject = _subjectDapper.GetOneSubject(Id);
+
+                return subject;
+            }
+
+        }
+       
     }
 }
+

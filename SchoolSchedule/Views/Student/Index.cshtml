@@ -13,7 +13,7 @@
 <table class="table table-striped">
     <thead>
         <tr>
-            @*<th>ID</th>*@
+            <th>ID</th>
             <th>Name</th>
             <th>Last Name</th>
             <th>Class</th>
@@ -24,14 +24,14 @@
         @foreach (var student in Model)
         {
             <tr>
-                @*<td>@student.Id</td>*@
+                <td>@student.Id</td>
                 <td>@student.Name</td>
                 <td>@student.LastName</td>
                 <td>@student.Class</td>
                
 
                 <td>
-                    @Html.ActionLink("Details", "Details", new { Id = student.Id }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Details", "Details", "Student", new { Id = student.Id }, new { @class = "btn btn-primary" })
                 </td>
             </tr>
         }

@@ -11,5 +11,7 @@ namespace SchoolSchedule.Models
         public string Name { get; set; }
         public string LastName { get; set; }
         public string Class { get; set; }
+
+        
     }
 }

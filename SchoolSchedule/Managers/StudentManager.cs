@@ -4,26 +4,50 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Configuration;
+using SchoolSchedule.Data;
+using Microsoft.Ajax.Utilities;
+using System.Web.Mvc;
+using System;
+
 
 namespace SchoolSchedule.Managers
 {
     public class StudentManager
     {
-        private readonly string connectionString;
+        private readonly StudentDapper _studentDapper;
+
 
         public StudentManager()
         {
-            connectionString = ConfigurationManager.ConnectionStrings["AlexDbConnection"].ConnectionString;
+            _studentDapper = new StudentDapper();
         }
 
-        public List<Student> GetAllStudents()
+
+
+        public IEnumerable<Models.Student> GetStudent()
         {
-            using (var connection = new SqlConnection(connectionString))
+
+
             {
-                return connection.Query<Student>("SELECT * FROM Student").ToList();
+                var student = _studentDapper.GetStudent();
+
+                return student;
             }
         }
 
-        // Другие методы для работы с таблицей Students
+
+        public Models.Student GetOneStudent(int id)
+        {
+            {
+                var student = _studentDapper.GetOneStudent(id);
+
+                return student;
+            }
+
+
+        }
+
+        
     }
 }
+

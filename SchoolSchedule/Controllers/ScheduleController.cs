@@ -23,6 +23,17 @@ namespace SchoolSchedule.Controllers
             return View(schedule);
         }
 
+
+        public ActionResult Details(int Id)
+        {
+            var schedule = _scheduleManager.GetOneSchedule(Id);
+            if (schedule == null)
+            {
+                return HttpNotFound();
+            }
+            return View(schedule);  
+        }
+
         // Другие методы для создания, редактирования и удаления записей расписания
     }
 }
