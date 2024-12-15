@@ -26,31 +26,31 @@ namespace SchoolSchedule.Data
             using (var connection = new SqlConnection(connectionString))
             {
                 var query = @"
-                    SELECT s.Id, s.Name AS StudentName, s.LastName AS StudentLastName, sub.Name AS Subject, t.LastName AS TeacherLastName
-                    FROM Student s
-                    JOIN Subject sub ON s.Class = sub.Class
-                    JOIN Teacher t ON sub.Name = t.Subject";
+            SELECT s.Id, s.Name AS StudentName, s.LastName AS StudentLastName, sub.Name AS Subject, 
+                   sub.Class AS Class, t.LastName AS TeacherLastName
+            FROM Student s
+            JOIN Subject sub ON s.Class = sub.Class
+            JOIN Teacher t ON sub.Name = t.Subject";
 
                 return connection.Query<Schedule>(query).ToList();
             }
         }
 
-        public Schedule GetOneSchedule(int Id)
-        {
-            using (var connection = new SqlConnection(connectionString))
-            {
-                var query = @"
-                            SELECT s.Id AS Id, s.Name AS StudentName, s.LastName AS StudentLastName, 
-                                   sub.Name AS Subject, t.LastName AS TeacherLastName
-                            FROM Student s
-                            JOIN Subject sub ON s.Class = sub.Class
-                            JOIN Teacher t ON sub.Name = t.Subject
-                            WHERE s.Id = @Id";
+        //public Schedule GetOneSchedule(int Id)
+        //{
+        //    using (var connection = new SqlConnection(connectionString))
+        //    {
+        //        var query = @"
+        //    SELECT stud.Id, stud.Name AS StudentName, stud.LastName AS StudentLastName, 
+        //           sub.Name AS Subject, sub.Class AS Class, tch.LastName AS TeacherLastName
+        //    FROM Student stud
+        //    JOIN Subject sub ON stud.Class = sub.Class
+        //    JOIN Teacher tch ON sub.Name = tch.Subject
+        //    WHERE stud.Id = @Id";
 
-                return connection.QuerySingleOrDefault<Schedule>(query, new { Id });
-            }
-        }
-
+        //        return connection.QueryFirstOrDefault<Schedule>(query, new { Id });
+        //    }
+        //}
 
     }
 

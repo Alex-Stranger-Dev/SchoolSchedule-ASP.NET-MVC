@@ -47,7 +47,22 @@ namespace SchoolSchedule.Managers
 
         }
 
-        
+
+        public void UpdateStudent(Student student)
+        {
+            _studentDapper.UpdateStudent(student);
+        }
+
+        public void DeleteStudent(int id)
+        {
+            _studentDapper.DeleteStudent(id);
+        }
+
+        public void AddNewStudent(Student student)
+        {
+            _studentDapper.AddNewStudent(student);
+        }
+
     }
 }
 

@@ -13,6 +13,7 @@
             <th>Student Name</th>
             <th>Student Last Name</th>
             <th>Subject</th>
+            <th>Class</th> 
             <th>Teacher Last Name</th>
         </tr>
     </thead>
@@ -25,15 +26,11 @@
                 <td>@schedule.StudentName</td>
                 <td>@schedule.StudentLastName</td>
                 <td>@schedule.Subject</td>
+                <td>@schedule.Class</td>  
                 <td>@schedule.TeacherLastName</td>
 
-
-                <td>
-                    @Html.ActionLink("Details", "Details", new { Id = schedule.Id }, new { @class = "btn btn-primary" })
-                </td>
+                
             </tr>
         }
     </tbody>
 </table>
-
-

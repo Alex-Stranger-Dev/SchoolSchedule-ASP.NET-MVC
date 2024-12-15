@@ -1,64 +1,52 @@
-﻿
-    @model SchoolSchedule.Models.Student
+﻿@model SchoolSchedule.Models.Student
 
-    @{
-        ViewBag.Title = "Adding new student";
-    }
+@{
+    ViewBag.Title = "Adding new student";
+}
 
+@using (Html.BeginForm("Insert", "Student", FormMethod.Post))
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Last Name</th>
+                <th>Class</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })</td>
+                <td>@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</td>
+                <td>@Html.TextBoxFor(m => m.Class, new { @class = "form-control" })</td>
+                <td>
+                    <input type="submit" value="Insert" class="btn btn-success" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
 
-    @using (Html.BeginForm("Insert", "Student", FormMethod.Post))
-    {
-
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Student Id</th>
-                    <th>Name</th>
-                    <th>Last Name</th>
-                    <th>Class</th>
-                    
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>@Html.DropDownListFor(m => m.Id, new SelectList(ViewBag.Student, "Id", "LastName"), "Select Student", new { @class = "form-control" })</td>
-                    <td>@Html.DropDownListFor(m => m., new SelectList(ViewBag.Student, "Id", "LastName"), "Select Student", new { @class = "form-control" })</td>
-                    <td>@Html.DropDownListFor(m => m., new SelectList(ViewBag.Student, "Id", "LastName"), "Select Student", new { @class = "form-control" })</td
-                    <td>@Html.DropDownListFor(m => m., new SelectList(ViewBag.Student, "Id", "Class"), "Select Student", new { @class = "form-control" })</td>
-                    
-                    <td>
-                        <input type="submit" value="Insert" class="btn btn-success" />
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    }
-
-    <!--Modal-->
-
-    <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="resultModalLabel">Result</h5>
-                    <button id="closeModalButton" type="button" class="close hiding" data-dismiss="modal" aria-label="Close">
-
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p id="resultMessage"></p>
-                </div>
-                @*<div class="modal-footer">
-                        <button id = "closeModalButton" class="close hiding btn btn-secondary" type="button"  data-dismiss="modal">Close</button>
-                    </div>*@
+<!--Modal-->
+<div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="resultModalLabel">Result</h5>
+                <button id="closeModalButton" type="button" class="close hiding" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p id="resultMessage"></p>
             </div>
         </div>
     </div>
+</div>
 
-    @section Scripts {
-        <script>
-$(document).ready(function () {
+@section Scripts {
+    <script>
+        $(document).ready(function () {
             $('form').submit(function (event) {
                 event.preventDefault();
 
@@ -68,8 +56,7 @@ $(document).ready(function () {
                     type: form.attr('method'),
                     data: form.serialize(),
                     success: function (response) {
-
-                        $('#resultMessage').text(response.message);
+                        $('#resultMessage').text(response.message || 'Added successfully');
                         $('#resultModal').modal('show');
                     },
                     error: function () {
@@ -78,13 +65,11 @@ $(document).ready(function () {
                     }
                 });
             });
-});
+        });
+
         $('#closeModalButton').on('click', function () {
             $('#resultModal').css('visibility', 'hidden').modal('hide');
-            /*location.reload();*/ /*refresh current page */
             window.location.href = '@Url.Action("Index", "Student")';
         });
-        </script>
-    }
-
-
+    </script>
+}

@@ -1,6 +1,6 @@
 ﻿
 
-@model IEnumerable<SchoolSchedule.Models.Teacher>
+@model SchoolSchedule.Models.Teacher
 
 @{
     ViewBag.Title = "Details";
@@ -19,7 +19,7 @@
 
 @using (Html.BeginForm("Update", "Teacher", FormMethod.Post))
 {
-    @*@Html.HiddenFor(m => m.Id)*@
+    @Html.HiddenFor(m => m.Id)
     <table class="table table-striped">
         <thead>
             <tr>
@@ -32,10 +32,10 @@
         </thead>
         <tbody>
             <tr>
-                <td>@teacher.Id</td>
-                <td>@teacher.Name</td>
-                <td>@teacher.LastName</td>
-                <td>@teacher.Subject</td>
+                <td>@Html.DisplayFor(m => m.Id)</td>
+                <td>@Html.TextBoxFor(m => m.Name)</td>
+                <td>@Html.TextBoxFor(m => m.LastName)</td>
+                <td>@Html.TextBoxFor(m => m.Subject)</td>
                 <td>
                     <input type="submit" value="Update" class="btn btn-success" />
                 </td>
@@ -43,7 +43,7 @@
         </tbody>
     </table>
 }
-@using (Html.BeginForm("Delete", "Teacher", new { Id = teacher.Id }, FormMethod.Post))
+@using (Html.BeginForm("Delete", "Teacher", new { Id = Model.Id }, FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Id)
     <input type="submit" value="Delete" class="btn btn-danger" />
@@ -75,31 +75,32 @@
 
 @section Scripts {
     <script>
-$(document).ready(function () {
-            $('form').submit(function (event) {
-                event.preventDefault();
+    $(document).ready(function () {
+        $('form').submit(function (event) {
+            event.preventDefault();
 
-                var form = $(this);
-                $.ajax({
-                    url: form.attr('action'),
-                    type: form.attr('method'),
-                    data: form.serialize(),
-                    success: function (response) {
-
-                        $('#resultMessage').text(response.message);
-                        $('#resultModal').modal('show');
-                    },
-                    error: function () {
-                        $('#resultMessage').text('An error occurred while processing your request.');
-                        $('#resultModal').modal('show');
-                    }
-                });
+            var form = $(this);
+            $.ajax({
+                url: form.attr('action'),
+                type: form.attr('method'),
+                data: form.serialize(),
+                success: function (response) {
+                    $('#resultMessage').text(response.message || 'Changes made successfully');
+                    $('#resultModal').modal('show');
+                },
+                error: function () {
+                    $('#resultMessage').text('There was an error processing your request');
+                    $('#resultModal').modal('show');
+                }
             });
-});
-        $('#closeModalButton').on('click', function () {
-            $('#resultModal').css('visibility', 'hidden').modal('hide');
-            /*location.reload();*/ /*refresh current page */
-            window.location.href = '@Url.Action("Index", "Teacher", new { Id = Model.Id })';
         });
+    });
+
+    $('#closeModalButton').on('click', function () {
+        $('#resultModal').css('visibility', 'hidden').modal('hide');
+        location.reload(); /* Refreshing the current page */
+        window.location.href = '@Url.Action("Index", "Teacher", new { Id = Model.Id })';
+    });
     </script>
+
 }

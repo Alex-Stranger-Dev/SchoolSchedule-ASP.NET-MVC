@@ -120,10 +120,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\ISubjectManager.cs" />
     <Compile Include="Abstract\ISubjectDapper.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\SubjectController.cs" />
     <Compile Include="Controllers\StudentController.cs" />
     <Compile Include="Controllers\TeacherController.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="Managers\SubjectManager.cs" />
     <Compile Include="Managers\TeacherManager.cs" />
     <Compile Include="Managers\StudentManager.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Models\Schedule.cs" />
     <Compile Include="Models\Subject.cs" />
     <Compile Include="Models\Teacher.cs" />
@@ -208,6 +211,7 @@
     <Content Include="Views\Subject\Details.cshtml" />
     <Content Include="Views\Teacher\Details.cshtml" />
     <Content Include="Views\Teacher\InsertForm.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

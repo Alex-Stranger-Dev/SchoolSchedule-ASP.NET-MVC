@@ -12,5 +12,6 @@ namespace SchoolSchedule.Models
         public string StudentLastName { get; set; }
         public string Subject { get; set; }
         public string TeacherLastName { get; set; }
+        public string Class { get; set; }
     }
 }

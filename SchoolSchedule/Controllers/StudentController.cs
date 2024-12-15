@@ -24,7 +24,7 @@ namespace SchoolSchedule.Controllers
         }
 
 
-        [HttpGet]
+        
         public ActionResult Details(int id)
         {
             var student = _studentManager.GetOneStudent(id);
@@ -35,6 +35,9 @@ namespace SchoolSchedule.Controllers
             return View(student);
         }
 
+        
+
+
         [HttpPost]
         public ActionResult Update(Student student)
         {
@@ -42,7 +45,7 @@ namespace SchoolSchedule.Controllers
             {
                 try
                 {
-                    // Добавьте логику обновления
+                    _studentManager.UpdateStudent(student);
                     return Json(new { success = true, message = "Successfully updated" });
                 }
                 catch (Exception ex)
@@ -53,8 +56,36 @@ namespace SchoolSchedule.Controllers
             return Json(new { success = false, message = "Invalid model state" });
         }
 
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                _studentManager.DeleteStudent(id);
+                return Json(new { success = true, message = "Successfully deleted" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "Error deleting record" });
+            }
+        }
 
 
+        public ActionResult InsertForm()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Insert(Student student)
+        {
+            if (ModelState.IsValid)
+            {
+                _studentManager.AddNewStudent(student);
+                return RedirectToAction("Index");
+            }
+            return View(student);
+        }
 
 
 
@@ -62,4 +93,3 @@ namespace SchoolSchedule.Controllers
 
 }
 
-// Другие методы для создания, редактирования и удаления записей расписания

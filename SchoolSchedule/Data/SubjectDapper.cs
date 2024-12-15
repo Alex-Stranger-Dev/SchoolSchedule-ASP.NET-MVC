@@ -4,57 +4,135 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 using Dapper;
-using SchoolSchedule.Abstract;
+
 using SchoolSchedule.Models;
 
 
 namespace SchoolSchedule.Data
 {
-    public class SubjectDapper : ISubjectDapper
+    public class SubjectDapper
     {
-        private readonly string connectionString = ConfigurationManager.ConnectionStrings["AlexDbConnection"].ConnectionString;
+        private readonly string _connectionString;
 
-        //public SubjectDapper()
+        public SubjectDapper()
+        {
+            _connectionString = ConfigurationManager.ConnectionStrings["AlexDbConnection"].ConnectionString;
+        }
+
+        //public List<Models.Subject> GetListSubject()
         //{
-        //    connectionString = ConfigurationManager.ConnectionStrings["AlexDbConnection"].ConnectionString;
+        //   try
+        //    {
+        //        using (var connection = new SqlConnection(_connectionString))
+        //        {
+        //            var query = @"
+        //                SELECT s.Id, s.Name, s.Class
+        //                FROM Subject s
+        //                JOIN Teacher t ON s.Name = t.Subject";
+
+        //            return connection.Query<Subject>(query).ToList();
+        //        }
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return new List<Subject>(); //вернуться и подумать что вернуть
+        //    }
+
         //}
+
 
         public List<Models.Subject> GetListSubject()
         {
-           try
+            try
             {
-                using (var connection = new SqlConnection(connectionString))
+                using (var connection = new SqlConnection(_connectionString))
                 {
                     var query = @"
-                        SELECT s.Name, s.Class, t.LastName
-                        FROM Subject s
-                        JOIN Teacher t ON s.Name = t.Subject";
+                SELECT Id, Name, Class
+                FROM Subject";
 
                     return connection.Query<Subject>(query).ToList();
                 }
-
             }
             catch (Exception ex)
             {
-                return new List<Subject>(); //вернуться и подумать что вернуть
+                // Логирование ошибки
+                return new List<Subject>();
             }
-            
         }
+
+
+        //public Models.Subject GetOneSubject(int Id)
+        //{
+        //    using (var connection = new SqlConnection(_connectionString))
+        //    {
+        //        var query = @"
+        //            SELECT  s.Id, s.Name, s.Class, t.LastName
+        //            FROM Subject s
+        //            JOIN Teacher t ON s.Name = t.Subject
+        //            WHERE s.Id = @Id";
+
+        //        return connection.QuerySingleOrDefault<Subject>(query, new { Id });
+        //    }
+
+        //}
+
 
         public Models.Subject GetOneSubject(int Id)
         {
-            using (var connection = new SqlConnection(connectionString))
+            using (var connection = new SqlConnection(_connectionString))
             {
                 var query = @"
-                    SELECT  s.Id AS Id,sub.Name AS Subject, s.Class AS Class, t.LastName AS TeacherLastName
-                    FROM Subject s
-                    JOIN Teacher t ON sub.Name = t.Subject
-                    WHERE s.Id = @Id";
+            SELECT s.Id, s.Name, s.Class
+            FROM Subject s
+            WHERE s.Id = @Id";
 
                 return connection.QuerySingleOrDefault<Subject>(query, new { Id });
             }
-
         }
+
+
+        public void AddNewSubject(Subject subject)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = @"
+            INSERT INTO Subject (Name, Class)
+            VALUES (@Name, @Class);
+            SELECT CAST(SCOPE_IDENTITY() as int)";
+
+                var id = connection.QuerySingle<int>(query, new { subject.Name, subject.Class });
+                subject.Id = id;
+            }
+        }
+
+        public void UpdateSubject(Subject subject)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = @"
+            UPDATE Subject
+            SET Name = @Name, Class = @Class
+            WHERE Id = @Id";
+
+                connection.Execute(query, new { subject.Name, subject.Class, subject.Id });
+            }
+        }
+
+        public void DeleteSubject(int id)
+        {
+            using (var connection = new SqlConnection(_connectionString))
+            {
+                var query = @"
+            DELETE FROM Subject
+            WHERE Id = @Id";
+
+                connection.Execute(query, new { Id = id });
+            }
+        }
+
+
 
     }
 }

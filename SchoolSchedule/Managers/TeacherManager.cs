@@ -47,10 +47,21 @@ namespace SchoolSchedule.Managers
 
         }
 
-        internal object GetOneTeacher()
+        public void AddNew(Teacher teacher)
         {
-            throw new NotImplementedException();
+            _teacherDapper.AddNew(teacher);
         }
+
+        public void Update(Teacher teacher)
+        {
+            _teacherDapper.Update(teacher);
+        }
+
+        public void Delete(int id)
+        {
+            _teacherDapper.Delete(id);
+        }
+
     }
 }
 

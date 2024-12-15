@@ -34,20 +34,18 @@ namespace SchoolSchedule.Managers
         }
 
 
-        public Models.Schedule GetOneSchedule(int Id)
-        {
-            {
-                return _scheduleDapper.GetOneSchedule(Id);
-            }
-        }   
+        //public Models.Schedule GetOneSchedule(int Id)
+        //{
+        //    {
+        //        return _scheduleDapper.GetOneSchedule(Id);
+        //    }
+        //}   
 
             
         
 
-        //internal object GetOneSchedule()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        
+        
     }
 }
 

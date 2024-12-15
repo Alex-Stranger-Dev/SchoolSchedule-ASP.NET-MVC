@@ -15,17 +15,11 @@ namespace SchoolSchedule.Managers
 {
     public class SubjectManager
     {
-        private readonly ISubjectDapper _subjectDapper;
+        private readonly SubjectDapper _subjectDapper;
 
-
-        //public SubjectManager()
-        //{
-        //    _subjectDapper = new SubjectDapper();
-        //}
-
-        public SubjectManager(ISubjectDapper dapper)
+        public SubjectManager()
         {
-            _subjectDapper = dapper;
+            _subjectDapper = new SubjectDapper();
         }
 
         public IEnumerable<Models.Subject> GetListSubject()
@@ -46,7 +40,23 @@ namespace SchoolSchedule.Managers
             }
 
         }
-       
+
+        public void AddNewSubject(Subject subject)
+        {
+            _subjectDapper.AddNewSubject(subject);
+        }
+
+
+        public void UpdateSubject(Subject subject)
+        {
+            _subjectDapper.UpdateSubject(subject);
+        }
+
+        public void DeleteSubject(int id)
+        {
+            _subjectDapper.DeleteSubject(id);
+        }
+
     }
 }
 

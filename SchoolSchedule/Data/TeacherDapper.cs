@@ -26,9 +26,9 @@ namespace SchoolSchedule.Data
             using (var connection = new SqlConnection(connectionString))
             {
                 var query = @"
-                    SELECT t.Id AS Id,sub.Name AS Subject, t.LastName AS TeacherLastName, t.Name AS Name
+                    SELECT  DISTINCT t.Id, t.LastName, t.Name, t.Subject
                     FROM Teacher t
-                    JOIN Subject sub ON s.Class = sub.Class";
+                    JOIN Subject sub ON Class = sub.Class";
 
 
                 return connection.Query<Teacher>(query).ToList();
@@ -40,9 +40,9 @@ namespace SchoolSchedule.Data
             using (var connection = new SqlConnection(connectionString))
             {
                 var query = @"
-                    SELECT t.Id AS Id,sub.Name AS Subject, t.LastName AS TeacherLastName, t.Name AS Name
+                    SELECT  TOP 1 t.Id, t.LastName, t.Name, t.Subject
                     FROM Teacher t
-                    JOIN Subject sub ON s.Class = sub.Class
+                    JOIN Subject sub ON Class = sub.Class
                     WHERE t.Id = @Id";
 
                 return connection.QuerySingleOrDefault<Teacher>(query, new { Id });
@@ -50,9 +50,86 @@ namespace SchoolSchedule.Data
 
         }
 
+        public void AddNew(Teacher teacher)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var query = @" 
+                            INSERT INTO Teacher (Name, LastName, Subject)
+                            VALUES (@Name, @LastName, @Subject); 
+                            SELECT CAST(SCOPE_IDENTITY() as int)"; 
+                var id = connection.QuerySingle<int>(query, new { teacher.Name, teacher.LastName, teacher.Subject }); teacher.Id = id;
+            } 
+        }
+
+        public void Update(Teacher teacher)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var query = @"
+            UPDATE Teacher
+            SET Name = @Name, LastName = @LastName, Subject = @Subject
+            WHERE Id = @Id";
+
+                connection.Execute(query, new { teacher.Name, teacher.LastName, teacher.Subject, teacher.Id });
+            }
+        }
+
+        public void ReorderTeacherIds()
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    var tempTableQuery = @"
+                CREATE TABLE #TempTeacher
+                (
+                    TempId INT IDENTITY(1,1),
+                    Name NVARCHAR(MAX),
+                    LastName NVARCHAR(MAX),
+                    Subject NVARCHAR(MAX)
+                );
+
+                INSERT INTO #TempTeacher (Name, LastName, Subject)
+                SELECT Name, LastName, Subject FROM Teacher ORDER BY Id;
+
+                DELETE FROM Teacher;
+
+                DBCC CHECKIDENT ('Teacher', RESEED, 0);
+
+                INSERT INTO Teacher (Name, LastName, Subject)
+                SELECT Name, LastName, Subject FROM #TempTeacher;
+
+                DROP TABLE #TempTeacher";
+
+                    connection.Execute(tempTableQuery, transaction: transaction);
+                    transaction.Commit();
+                }
+            }
+        }
+
+
+
+
+
+
+        public void Delete(int id)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var query = @"
+            DELETE FROM Teacher
+            WHERE Id = @Id";
+
+                connection.Execute(query, new { Id = id });
+                ReorderTeacherIds();
+            }
+        }
+
+
     }
 }
-
 
 
 //{

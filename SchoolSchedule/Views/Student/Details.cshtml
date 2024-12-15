@@ -1,6 +1,4 @@
-﻿
-@model SchoolSchedule.Models.Student
-
+﻿@model SchoolSchedule.Models.Student
 
 @{
     ViewBag.Title = "Details";
@@ -8,18 +6,9 @@
 
 <h2>Details</h2>
 
-
-
-@*@if (!string.IsNullOrEmpty(ViewBag.Message))
-    {
-        <div class="alert alert-info">
-            @ViewBag.Message
-        </div>
-    }*@
-
 @using (Html.BeginForm("Update", "Student", FormMethod.Post))
 {
-     @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.Id)
     <table class="table table-striped">
         <thead>
             <tr>
@@ -27,7 +16,6 @@
                 <th>Student First Name</th>
                 <th>Student Last Name</th>
                 <th>Class</th>
-
             </tr>
         </thead>
         <tbody>
@@ -36,7 +24,6 @@
                 <td>@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })</td>
                 <td>@Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })</td>
                 <td>@Html.TextBoxFor(m => m.Class, new { @class = "form-control" })</td>
-
                 <td>
                     <input type="submit" value="Update" class="btn btn-success" />
                 </td>
@@ -44,39 +31,33 @@
         </tbody>
     </table>
 }
-@using (Html.BeginForm("Delete", "Student", new { Id = Model.Id }, FormMethod.Post))
+
+@using (Html.BeginForm("Delete", "Student", new { id = Model.Id }, FormMethod.Post))
 {
     @Html.HiddenFor(m => m.Id)
     <input type="submit" value="Delete" class="btn btn-danger" />
 }
 
-
-
 <!--Modal-->
-
 <div class="modal fade" id="resultModal" tabindex="-1" role="dialog" aria-labelledby="resultModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="resultModalLabel">Result</h5>
                 <button id="closeModalButton" type="button" class="close hiding" data-dismiss="modal" aria-label="Close">
-
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <p id="resultMessage"></p>
             </div>
-            @*<div class="modal-footer">
-                    <button id = "closeModalButton" class="close hiding btn btn-secondary" type="button"  data-dismiss="modal">Close</button>
-                </div>*@
         </div>
     </div>
 </div>
 
 @section Scripts {
     <script>
-$(document).ready(function () {
+        $(document).ready(function () {
             $('form').submit(function (event) {
                 event.preventDefault();
 
@@ -86,8 +67,7 @@ $(document).ready(function () {
                     type: form.attr('method'),
                     data: form.serialize(),
                     success: function (response) {
-
-                        $('#resultMessage').text(response.message);
+                        $('#resultMessage').text(response.message || 'Changes made successfully');
                         $('#resultModal').modal('show');
                     },
                     error: function () {
@@ -96,12 +76,11 @@ $(document).ready(function () {
                     }
                 });
             });
-});
+        });
+
         $('#closeModalButton').on('click', function () {
             $('#resultModal').css('visibility', 'hidden').modal('hide');
-            /*location.reload();*/ /*refresh current page */
             window.location.href = '@Url.Action("Index", "Student")';
         });
     </script>
 }
-

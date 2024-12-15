@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SchoolSchedule", "SchoolSch
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest_SchoolSchedule", "UnitTest_SchoolSchedule\UnitTest_SchoolSchedule.csproj", "{7204559B-736E-4548-B55A-C24A51339BBA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test_School_xUnit", "Test_School_xUnit\Test_School_xUnit.csproj", "{68B75954-0CF9-48F0-91E9-B64B2E082E2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7204559B-736E-4548-B55A-C24A51339BBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7204559B-736E-4548-B55A-C24A51339BBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7204559B-736E-4548-B55A-C24A51339BBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68B75954-0CF9-48F0-91E9-B64B2E082E2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68B75954-0CF9-48F0-91E9-B64B2E082E2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68B75954-0CF9-48F0-91E9-B64B2E082E2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68B75954-0CF9-48F0-91E9-B64B2E082E2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

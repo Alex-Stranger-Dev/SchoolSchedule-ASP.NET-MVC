@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using SchoolSchedule.Models;
+﻿using System.Web.Mvc;
+using SchoolSchedule.Abstract;
 using SchoolSchedule.Managers;
-using SchoolSchedule.Data;
+using SchoolSchedule.Models;
 
 namespace SchoolSchedule.Controllers
 {
     public class SubjectController : Controller
     {
         private readonly SubjectManager _subjectManager;
-        private readonly SubjectDapper _subjectDapper;
 
         public SubjectController()
         {
-            _subjectManager = new SubjectManager(_subjectDapper);
+            _subjectManager = new SubjectManager();
         }
 
         public ActionResult Index()
@@ -26,12 +21,50 @@ namespace SchoolSchedule.Controllers
         }
 
 
+        //public ActionResult Details(int Id)
+        //{
+        //    var subject = _subjectManager.GetOneSubject(Id);
+        //    return View(subject);
+        //}
+
+
         public ActionResult Details(int Id)
         {
             var subject = _subjectManager.GetOneSubject(Id);
+            if (subject == null)
+            {
+                return HttpNotFound(); // Вернуть 404, если объект не найден
+            }
             return View(subject);
         }
-        // Другие методы для создания, редактирования и удаления записей расписания
+
+
+        public ActionResult InsertForm()
+        {
+            ViewBag.Subject = _subjectManager.GetListSubject(); 
+            return View();
+        }
+        [HttpPost] 
+        public ActionResult Insert(Subject subject)
+        {
+            _subjectManager.AddNewSubject(subject); 
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Update(Subject subject)
+        {
+            _subjectManager.UpdateSubject(subject);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            _subjectManager.DeleteSubject(id);
+            return RedirectToAction("Index");
+        }
+
     }
 }
 

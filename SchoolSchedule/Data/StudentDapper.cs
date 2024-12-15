@@ -48,6 +48,46 @@ namespace SchoolSchedule.Data
             }
         }
 
+        public void UpdateStudent(Student student)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var query = @"
+            UPDATE Student
+            SET Name = @Name, LastName = @LastName, Class = @Class
+            WHERE Id = @Id";
+
+                connection.Execute(query, new { student.Name, student.LastName, student.Class, student.Id });
+            }
+        }
+
+        public void DeleteStudent(int id)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var query = @"
+            DELETE FROM Student
+            WHERE Id = @Id";
+
+                connection.Execute(query, new { Id = id });
+            }
+        }
+
+        public void AddNewStudent(Student student)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                var query = @"
+            INSERT INTO Student (Name, LastName, Class)
+            VALUES (@Name, @LastName, @Class);
+            SELECT CAST(SCOPE_IDENTITY() as int)";
+
+                var id = connection.QuerySingle<int>(query, new { student.Name, student.LastName, student.Class });
+                student.Id = id;
+            }
+        }
+
+
 
     }
 }

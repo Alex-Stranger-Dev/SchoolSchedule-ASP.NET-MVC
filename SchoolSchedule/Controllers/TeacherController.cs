@@ -26,10 +26,78 @@ namespace SchoolSchedule.Controllers
 
         public ActionResult Details(int Id)
         {
-            var teacher = _teacherManager.GetOneTeacher();
+            var teacher = _teacherManager.GetOneTeacher(Id);
             return View(teacher);
         }
-        // Другие методы для создания, редактирования и удаления записей расписания
+
+        public ActionResult InsertForm()
+        {
+            ViewBag.Teacher = new SelectList(_teacherManager.GetTeacher(), "LastName", "LastName");
+            return View();
+        }
+
+
+        //public ActionResult InsertForm()
+        //{
+        //    ViewBag.Teacher = _teacherManager.GetTeacher();
+        //    return View();
+        //}
+
+
+
+        //[HttpPost]
+        //public ActionResult Insert(Teacher teacher)
+        //{
+        //    if (teacher.Id == 0)
+        //    {
+        //        // Проверка на наличие учителя с таким же LastName, если нет, добавляем как нового
+        //        var existingTeacher = _teacherManager.GetTeacher().FirstOrDefault(t => t.LastName == teacher.LastName);
+        //        if (existingTeacher != null)
+        //        {
+        //            teacher.Id = existingTeacher.Id; // Используем существующего учителя
+        //        }
+        //        else
+        //        {
+        //            _teacherManager.AddNew(teacher);
+        //        }
+        //    }
+        //    return RedirectToAction("Index");
+        //}
+
+        [HttpPost]
+        public ActionResult Insert(Teacher teacher)
+        {
+            // Проверка на наличие учителя с таким же LastName
+            var existingTeacher = _teacherManager.GetTeacher().FirstOrDefault(t => t.LastName == teacher.LastName);
+            if (existingTeacher != null)
+            {
+                ViewBag.ErrorMessage = "Учитель с такой фамилией уже существует!";
+                ViewBag.Teacher = _teacherManager.GetTeacher();
+                return View("InsertForm");
+            }
+
+            // Добавляем нового учителя
+            _teacherManager.AddNew(teacher);
+            return RedirectToAction("Index");
+        }
+
+
+
+        [HttpPost]
+        public ActionResult Update(Teacher teacher)
+        {
+            _teacherManager.Update(teacher);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int Id)
+        {
+            _teacherManager.Delete(Id);
+            return RedirectToAction("Index");
+        }
+
+
     }
 }
 
